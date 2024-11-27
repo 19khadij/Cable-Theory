@@ -22,6 +22,9 @@ dt=0.1 #Time step in ms
 t_max=2000 #Maximum simulation duration in ms
 time=np.arange(0,t_max,dt)#time array
 
+τ_m = Cm / g_passive   # Membrane time constant in ms (10 ms)
+λ_m = 0.28             # Length constant in cm (calculated) #Length in cm, which characterizes the spatial scale of voltage changes along the cable
+
 # print(
 #     L,diameter,segment,dx,x,Ra,Cm,g_passive,E_passive,
 #     dt,t_max,time
