@@ -23,9 +23,6 @@ To run this simulation, you will need Python 3 and the following packages:
 -Save the code for each file (cable.py, stimuli.py, parameters.py, main.py).
 -Run main.py to start the simulation and generate voltage plots.
 
-![alt text](VoltageatSelectedSegment.png)
-
-![alt text](VoltageProfileoverTime.png)
 
 # Conclusion
 This simulation provides insight into how electrical signals propagate along a dendrite in response to external current injections. The cable equation is used to model the changes in membrane potential across multiple segments of the dendrite.
