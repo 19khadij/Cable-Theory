@@ -33,20 +33,34 @@ def update_voltage_eq1(V,I_ext,dx,Ra,τ_m,λ_m,Cm,g_passive,E_passive,dt):
     # V_new=V+(dVdt+I_ext/Cm)*dt
 
     # Calculate membrane current
-    I_membrane = g_passive * (V - E_passive)
+    # I_membrane = g_passive * (V - E_passive)
 
+    # # Calculate second spatial derivative
+    # d2Vdx2 = (V[2:] - 2 * V[1:-1] + V[:-2]) / dx**2
+    # d2Vdx2 = np.pad(d2Vdx2, (1, 1), 'constant', constant_values=0)  # Pad with zeros
+
+    # # Clip extreme values to avoid overflow
+    # # d2Vdx2 = np.clip(d2Vdx2, -1e3, 1e3)
+    # # Update voltage using the cable equation
+    # dVdt = (1 / τ_m) * (((λ_m)**2 * d2Vdx2) - V + (τ_m * I_ext))
+
+    # # dVdt = np.clip(dVdt, -1e3, 1e3)  # Prevent extreme voltage changes
+
+    # V_new = V + dVdt * dt
+
+    #---------New------
     # Calculate second spatial derivative
     d2Vdx2 = (V[2:] - 2 * V[1:-1] + V[:-2]) / dx**2
-    d2Vdx2 = np.pad(d2Vdx2, (1, 1), 'constant', constant_values=0)  # Pad with zeros
+    d2Vdx2 = np.pad(d2Vdx2, (1, 1), 'edge')  # Use edge padding instead of zeros
 
-    # Clip extreme values to avoid overflow
-    # d2Vdx2 = np.clip(d2Vdx2, -1e3, 1e3)
+    # Membrane current
+    I_membrane = g_passive * (V-E_passive)  # Correct sign
+
     # Update voltage using the cable equation
-    dVdt = (1 / τ_m) * (((λ_m)**2 * d2Vdx2) - V + (τ_m * I_ext))
-
-    # dVdt = np.clip(dVdt, -1e3, 1e3)  # Prevent extreme voltage changes
+    dVdt = (1 / τ_m) * (((λ_m)**2 * d2Vdx2) - V + (I_ext / Cm))  # Fixed external current term
 
     V_new = V + dVdt * dt
+
 
     # Ensure V remains finite
     if np.any(np.isnan(V_new)) or np.any(np.isinf(V_new)):
