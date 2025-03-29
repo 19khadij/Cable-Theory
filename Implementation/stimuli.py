@@ -23,3 +23,4 @@ def generate_stimuli(t,t_start,t_end,I_source,segment):
         for idx, amp in I_source:
             I_ext[idx]+=amp
     return I_ext
+
